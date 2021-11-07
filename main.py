@@ -20,9 +20,6 @@ st.title("Stock prediction app")
 stocks = ("AAPL", "GOOG", "MSFT", "GME")
 select_stocks = st.selectbox("Select stock for prediction", stocks)
 
-num_years = st.slider("Years of prediction", 1, 5)
-DURATION = num_years * 365 # FIXME:
-
 @st.cache # now don't have to re-download on changing data
 def load_data(ticker):
     data = yf.download(ticker, START, TODAY)
@@ -82,12 +79,15 @@ plot_raw_data(data)
 df_train: pd.DataFrame = data[["Date", "Close"]]
 df_train = df_train.rename(columns={"Date": "ds", "Close": "y"})
 
+st.subheader("Forecast data")
+num_years = st.slider("Years of prediction", 1, 5)
+DURATION = num_years * 365 # FIXME:
+
 m = Prophet()
 m.fit(df_train)
 future: pd.DataFrame = m.make_future_dataframe(periods=DURATION)
 forecast = m.predict(future)
 
-st.subheader("Forecast data")
 st.write(forecast.tail())
 
 st.write("Forecast Data")
