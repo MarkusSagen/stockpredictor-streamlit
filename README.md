@@ -11,8 +11,12 @@ cd stockpredictor-streamlit
 ```
 
 Install dependencies
-```python
+```shell
 poetry install 
+```
+
+Run 
+```shell
 poetry shell 
 poetry run streamlit run main.py
 ```
